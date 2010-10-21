@@ -1,5 +1,9 @@
 need gsl gslcblas apophenia library in include path and library path for compilation and linking
 
+Apophenia : http://apophenia.sourceforge.net/
+gsl, gslcblas: http://www.gnu.org/software/gsl/
+
+
 run
 
 bash make.sh
