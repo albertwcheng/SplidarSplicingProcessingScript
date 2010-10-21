@@ -1,0 +1,5 @@
+need gsl gslcblas apophenia library in include path and library path for compilation and linking
+
+run
+
+bash make.sh
