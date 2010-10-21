@@ -1,0 +1,1 @@
+eventID	eventType	locusName	egstring	jnxstring	chr	strand	inc/excBound	flankingCoboundFlag	inc/excCompleteBound	incSpecBound	excSpecBound	UCSCGenomeBrowser	IncSeq	excSeq	inUFSeq	inMFSeq	inDFSeq	exUFSeq	exMFSeq	exDFSeq
