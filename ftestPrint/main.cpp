@@ -65,10 +65,10 @@ void ftestPrint(const char* filename,int col1,int col2,int col3,int col4,int sta
 		double d2=StringUtil::atof(spliton[col2-1]);
 		double d3=StringUtil::atof(spliton[col3-1]);
 		double d4=StringUtil::atof(spliton[col4-1]);
-		//if (int(d1)+int(d2)+int(d3)+int(d4)==0)
-		//	cout<<"nan"<<endl;
-		//else
-		cout<<ftest(d1,d2,d3,d4)<<endl;
+		if (int(d1)+int(d2)+int(d3)+int(d4)==0)
+			cout<<"nan"<<endl;
+		else
+			cout<<ftest(d1,d2,d3,d4)<<endl;
 	}
 	delete buffer;
 	fin.close();
