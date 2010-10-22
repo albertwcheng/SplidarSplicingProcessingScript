@@ -16,22 +16,24 @@ cd $rootDir
 
 cd $sample
 
-rm *.00
+
+rm -f *.00
+
 
 
 
 cat $sample.*.exinc.xls > $sample.merged.headless.00 
 
 
-sed -e "s/sampleLabel/$sample/ig" < $scriptDir/headerGeneric.txt > $sample.header.txt
+sed -e "s/sampleLabel/$sample/ig" < $scriptDir/Splidar.Splicing.headerGeneric.txt > $sample.header.txt
 UCSCLinkCol=`colSelect.py "$sample.header.txt" .UCSCGenomeBrowser`  
 
 
 #correct the genome info here and make bed file
 
-eventKeyStart=`colSelect.py $scriptDir/headerGeneric.txt .eventType`
+eventKeyStart=`colSelect.py $scriptDir/Splidar.Splicing.headerGeneric.txt .eventType`
 eventKeyStart=`expr $eventKeyStart - 1`
-eventKeyEnd=`colSelect.py $scriptDir/headerGeneric.txt .UCSCGenomeBrowser`
+eventKeyEnd=`colSelect.py $scriptDir/Splidar.Splicing.headerGeneric.txt .UCSCGenomeBrowser`
 eventKeyEnd=`expr $eventKeyEnd - 1`
 
 

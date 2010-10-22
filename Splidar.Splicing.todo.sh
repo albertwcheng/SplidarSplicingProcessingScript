@@ -2,15 +2,24 @@
 
 #separate AFE and ALE
 if [ $# -lt 1 ]; then
-echo todo.sh genome [hg18 , mm9]
+	echo todo.sh paramFile
 exit
 fi
 
-genome=$1
 
-if [ 1 -eq 0 ]; then
 
-cd ..
+
+####set path
+
+myPath=`absdirname.py $0`
+export PATH=${PATH}:${myPath}
+export PATH=${PATH}:${myPath}/ftestPrint
+
+paramFile=$1
+paramFile=`abspath.py $paramFile`  #get the abs path of param file such that it can be used even when pwd is not the same
+
+if [ ! -e AFE ] || [ ! -e ALE ]; then
+if [ -e ATE ]; then  
 
 echo "splitting ATE into AFE and ALE"
 mkdir ALE
@@ -49,8 +58,14 @@ done
 
 cd ..
 
+fi
+fi
 
 #####
+
+if [ ! -e A5SS ] || [ ! -e A3SS ]; then
+if [ -e A53SS ]; then  
+
 
 echo "splitting A53SS into A5SS and A3SS"
 mkdir A5SS
@@ -89,22 +104,23 @@ done
 
 
 
-fi
 
 
 cd ..
 
+fi
+fi
 
 #####
 echo "done reorganizing"
 
-for event in  A3UTR   ; do #SE MXE RI  SE MXE RI_TT A5SS A3SS   A3UTR SE  #SE MXE RI A5SS A3SS AFE ALE  A5SS A3SS AFE ALE SE MXE RI A5SS A3SS AFE ALE
+for event in SE MXE RI A5SS A3SS  AFE ALE  A3UTR   ; do #SE MXE RI  SE MXE RI_TT A5SS A3SS   A3UTR SE  #SE MXE RI A5SS A3SS AFE ALE  A5SS A3SS AFE ALE SE MXE RI A5SS A3SS AFE ALE
 	echo "merging event $event"
-	cd $event
-	cp -R ../SplidarProcessingScript/scripts .
-	cd scripts
-	bash mergeSplidarOutput.sh $genome $event	
-	cd ..
-	cd ..
+	#cd $event
+	#cp -R ../SplidarProcessingScript/scripts .
+	#cd scripts
+	Splidar.Splicing.mergeSplidarOutput.sh $paramFile $event	
+	#cd ..
+	#cd ..
 done
 		

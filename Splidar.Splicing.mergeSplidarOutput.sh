@@ -4,24 +4,26 @@
 #chmod 777 *.py
 
 if [ $# -lt 2 ]; then
-	echo $0 genome eventType > /dev/stderr
+	echo $0  paramFile eventType > /dev/stderr
 	exit
 fi
 
-genome=$1
+scriptDir=`absdirname.py $0`
+paramFile=$1
+paramFile=`abspath.py $paramFile`
 eventType=$2
 
-LD_LIBRARY_PATH=/usr/local/lib
-export LD_LIBRARY_PATH
+inPath=`checkInPath.sh Splidar.Splicing.mergeSplidarOutput.sh`
 
-fPrintTestPath=ftestPrint
+if [[ $inPath == 0 ]]; then #not in path
+	echo "not in path. add path"
+	export PATH=${PATH}:$scriptDir
+	export PATH=${PATH}:$scriptDir/ftestPrint
+fi
 
-scriptDir=`pwd`
+source $paramFile
 
-rm *.00
-
-cd ..
-
+cd $eventType
 
 rm -f *.00
 rm -f seq.merged.highlyRedundant
@@ -29,21 +31,11 @@ rm -f seq.merged.highlyRedundant
 rootDir=`pwd`
 
 
-
-cd $scriptDir
-
-source $scriptDir/params.sh
-#echo $filterEventCriteria
-
-cd $scriptDir
-
-manifestfile=../manifest.txt
-
 TAB=`echo -e "\t"`
 
 
 if [ ! -e  $manifestfile ]; then
-	echo "manifest.txt does not exist. Create one and put sample name in it" > /dev/stderr
+	echo "manifest file does not exist. Create one and put sample name in it" > /dev/stderr
 	exit;
 fi;
 
@@ -58,16 +50,12 @@ templateSample=${samples[0]}
 echo "There are $nSamples samples"
 echo "They are ${samples[@]}"
 
-#if [ 1 -eq 0 ]; then
-
-#clean stuff
-
-if [ -e ../Events.count.log ]; then
-	rm ../Events.count.log
-fi
+#if [ -e ../Events.count.log ]; then
+#	rm ../Events.count.log
+#fi
 
 #now merge sequence file using the first sample as template:
-$scriptDir/mergeSplidarOutputSeq.sh $scriptDir $rootDir $templateSample
+Splidar.Splicing.mergeSplidarOutputSeq.sh $scriptDir $rootDir $templateSample
 #now there should be eventID.00 and seq.headless.00  and eventKey.00 here!!
 
 #check alignment of events:
@@ -75,7 +63,7 @@ $scriptDir/mergeSplidarOutputSeq.sh $scriptDir $rootDir $templateSample
 #eventID	eventType	locusName	egstring	jnxstring	chr	strand	inc/excBound	flankingCoboundFlag	inc/excCompleteBound	incSpecBound	excSpecBound	UCSCGenomeBrowser	sampleLabel.inFXR	inFXP	sampleLabel.inJR	inJP	sampleLabel.inMXR	inMXP	sampleLabel.inJRCheckString	inJPCheckString	sampleLabel.inJRFlag	inJPFlag	sampleLabel.exFXR	exFXP	sampleLabel.exJR	exJP	sampleLabel.exMXR	exMXP	sampleLabel.exJRCheckString	exJPCheckString	sampleLabel.exJRFlag	exJPFlag	sampleLabel.IncReads	IncPos	sampleLabel.ExcReads	ExcPos	sampleLabel.Inc+ExcReads	sampleLabel.NI	sampleLabel.NE+	sampleLabel.IR	sampleLabel.IncDensity	sampleLabel.ExcDensity	sampleLabel.Psi
 
 for sample in ${samples[@]}; do
-	$scriptDir/mergeSplidarOutputPerSample.sh $scriptDir $rootDir $sample $genome
+	Splidar.Splicing.mergeSplidarOutputPerSample.sh $scriptDir $rootDir $sample $genome
 	#now check if the event keys are aligned
 	diffResult=`diff -q -s "$rootDir/$sample/$sample.eventKey.00" $rootDir/eventKey.00`
 	echo $diffResult > /dev/stderr
@@ -127,8 +115,8 @@ fi
 
 
 #pairwise dIR and dPsi
-awk -f delta.awk -v NAME=dPsi -v COLS="$PsiColsString" -v COLNAMES="$samplesString" $rootDir/Combined-1.00 > $rootDir/dPsi.00
-awk -f delta.awk -v NAME=dIR -v COLS="$IRColsString" -v COLNAMES="$samplesString" $rootDir/Combined-1.00 > $rootDir/dIR.00
+awk -f $scriptDir/Splidar.Splicing.delta.awk -v NAME=dPsi -v COLS="$PsiColsString" -v COLNAMES="$samplesString" $rootDir/Combined-1.00 > $rootDir/dPsi.00
+awk -f $scriptDir/Splidar.Splicing.delta.awk -v NAME=dIR -v COLS="$IRColsString" -v COLNAMES="$samplesString" $rootDir/Combined-1.00 > $rootDir/dIR.00
 
 
 
@@ -160,9 +148,9 @@ if [ -e $rootDir/byEGString ]; then
 	rm -R $rootDir/byEGString
 fi
 
-if [ -e $rootDir/byJxString ]; then
-	rm -R $rootDir/byJxString
-fi
+#if [ -e $rootDir/byJxString ]; then
+#	rm -R $rootDir/byJxString
+#fi
 
 
 
@@ -175,19 +163,13 @@ mkdir $rootDir/byEGString
 #Usage: filterUniqueEventsMulti.py filename startRow1 idCols inJRFCols exJRFCols incExcReadCols NICols NECols pvalueCols ThresholdBothJRFPooledSample=-1|t ThresholdEitherJRFPerSample=-1|t ThresholdSumIncExcReadsPooledSample=-1|t ThresholdIncExcReadsPerSample=-1|t favorFlankingCobound=no|CoboundCol criteria=mmp:mininmize(min(p-value))|xmp: maximize(min(p-value))|mxp: minimize(max(p-value))|xxp: maximize(max(p-value)) |t:totalNINE 
 
 #select unique event by EGString selecting the one with both events JRFlag and maximize NE+NI total or pvalue
-$scriptDir/filterUniqueEventsMulti.py $rootDir/CombinedAnalysis.highlyRedundant 2 .locusName,.egstring @inJRFlag @exJRFlag "@Inc\\+ExcReads" @NI @NE+ @fisherpvalue $ThresholdBothJRFPooledSample $ThresholdEitherJRFPerSample $ThresholdSumIncExcReadsPooledSample $ThresholdIncExcReadsPerSample $favorFlankingCobound  $filterEventCriteria > $rootDir/byEGString/Combined.00
+Splidar.Splicing.filterUniqueEventsMulti.py $rootDir/CombinedAnalysis.highlyRedundant 2 .locusName,.egstring @inJRFlag @exJRFlag "@Inc\\+ExcReads" @NI @NE+ @fisherpvalue $ThresholdBothJRFPooledSample $ThresholdEitherJRFPerSample $ThresholdSumIncExcReadsPooledSample $ThresholdIncExcReadsPerSample $favorFlankingCobound  $filterEventCriteria > $rootDir/byEGString/Combined.00
 
 #fi #the if [ 1 -eq 0 ]
 
 echo "do with Exon group collapsed file"
-###ThresholdIncExcReadsPerSample=$6
-##ThresholdSumIncExcReadsSamplePair=$7
-##incDetectionThreshold=$8
-##excDetectionThreshold=$9
-##JFThreshold=${10}
-##FDRThreshold=${11}
-$scriptDir/mergeSplidarOutput_postCollapse.sh $scriptDir $rootDir byEGString $genome $eventType #$ThresholdIncExcReadsPerSample $ThresholdSumIncExcReadsSamplePair $incDetectionThreshold $excDetectionThreshold $JFThreshold $FDRThreshold
 
+Splidar.Splicing.mergeSplidarOutput_postCollapse.sh $scriptDir $rootDir byEGString $genome $eventType $paramFile 
 
 #echo "do with jnx string collapsed file"
 ###

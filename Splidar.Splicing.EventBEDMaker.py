@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 #  1.  chrom - The name of the chromosome (e.g. chr3, chrY, chr2_random) or scaffold (e.g. scaffold10671).
 #   2. chromStart - The starting position of the feature in the chromosome or scaffold. The first base in a chromosome is numbered 0.

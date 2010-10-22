@@ -22,3 +22,7 @@ FDRThreshold=0.05
 detectableColSelector=".TFDetectable"
 detectedColSelector="@TFDetected$"
 detectedbothColSelector="@TFDetectedBoth$"
+
+genome=hg18  #####
+manifestfile=manifest.txt #file name inside the event folder
+fPrintTestPath=ftestPrint

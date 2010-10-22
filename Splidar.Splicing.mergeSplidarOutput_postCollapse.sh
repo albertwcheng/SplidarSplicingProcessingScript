@@ -2,7 +2,7 @@
 
 TAB=`echo -e "\t"`;
 
-if [ $# -lt 5 ]; then
+if [ $# -lt 6 ]; then
 	echo "ERROR post collapse received insufficient arguments"
 	exit
 fi
@@ -12,14 +12,9 @@ rootDir=$2
 prefix=$3
 genome=$4
 eventType=$5
-#ThresholdIncExcReadsPerSample=$6
-#ThresholdSumIncExcReadsSamplePair=$7
-#incDetectionThreshold=$8
-#excDetectionThreshold=$9
-#JFThreshold=${10}
-#FDRThreshold=${11}
+paramfile=$6
 
-source $scriptDir/params.sh
+source $paramfile
 
 cd $rootDir
 
@@ -31,7 +26,7 @@ echo "$prefix>" >> Events.count.log
 cut -d"$TAB" -f1 "$prefix/Combined.00" | sort +0 -1 > "$prefix/seq.request.00"
 join -t"$TAB" "$prefix/seq.request.00" seq.merged.highlyRedundant > "$prefix/seq.merged.00"
 
-cat $scriptDir/seqHeader.txt "$prefix/seq.merged.00" > "$prefix/seq.merged.xls"
+cat $scriptDir/Splidar.Splicing.seqHeader.txt "$prefix/seq.merged.00" > "$prefix/seq.merged.xls"
 
 getNamesDesc.py --nameout "$prefix/CombinedAnalysis.names" $genome.config "$prefix/Combined.00" 3  3 > "$prefix/CombinedAnalysis.final.all.xls" 2> "$prefix/getGO.log"
 
@@ -39,11 +34,11 @@ getNamesDesc.py --nameout "$prefix/CombinedAnalysis.names" $genome.config "$pref
 
 
 #fileName,ThresholdIncExcReadsPerSample,ThresholdSumIncExcReadsSamplePair,incDetectionThreshold,excDetectionThreshold,JRThreshold
-$scriptDir/SplidarAddFlag.py "$prefix/Combined.00" $ThresholdIncExcReadsPerSample $ThresholdSumIncExcReadsSamplePair $incDetectionThreshold $excDetectionThreshold $JFThreshold > "$prefix/CombinedAnalysis.final.FDRm.00" 
+Splidar.Splicing.SplidarAddFlag.py "$prefix/Combined.00" $ThresholdIncExcReadsPerSample $ThresholdSumIncExcReadsSamplePair $incDetectionThreshold $excDetectionThreshold $JFThreshold > "$prefix/CombinedAnalysis.final.FDRm.00" 
 
-$scriptDir/EventBEDMaker.py --track-name $eventType --colors "255,0,0_0,0,255" "$prefix/CombinedAnalysis.final.FDRm.00" .eventType,.locusName,.eventID .chr .strand ".inc/excBound" > "$prefix/CombinedAnalysis.final.FDRm.BED" 
+Splidar.Splicing.EventBEDMaker.py --track-name $eventType --colors "255,0,0_0,0,255" "$prefix/CombinedAnalysis.final.FDRm.00" .eventType,.locusName,.eventID .chr .strand ".inc/excBound" > "$prefix/CombinedAnalysis.final.FDRm.BED" 
 
-$scriptDir/EventBEDMaker.py --track-name $eventType --colors "255,0,0_0,0,255" "$prefix/CombinedAnalysis.final.FDRm.00" .eventType,.locusName,.eventID .chr .strand ".inc/excCompleteBound" > "$prefix/CombinedAnalysis.final.FDRm.CompleteBound.BED" 
+Splidar.Splicing.EventBEDMaker.py --track-name $eventType --colors "255,0,0_0,0,255" "$prefix/CombinedAnalysis.final.FDRm.00" .eventType,.locusName,.eventID .chr .strand ".inc/excCompleteBound" > "$prefix/CombinedAnalysis.final.FDRm.CompleteBound.BED" 
 
 
 ###
@@ -134,7 +129,7 @@ for((i=0;i<numComparisons;i++));do
 
 
 	for dPsiThresholdUpper in 0.0 0.1 0.2 0.3; do
-		bash $scriptDir/findPowerSet.sh $FDRColSelector $FDRThreshold $dPsiColSelector -$dPsiThresholdUpper $dPsiThresholdUpper $bgset $scriptDir
+		bash $scriptDir/Splidar.Splicing.findPowerSet.sh $FDRColSelector $FDRThreshold $dPsiColSelector -$dPsiThresholdUpper $dPsiThresholdUpper $bgset $scriptDir
 	done
 
 	cd $newprefix

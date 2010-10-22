@@ -13,9 +13,9 @@ cd $rootDir
 
 cd $sample
 
-eventKeyStart=`colSelect.py $scriptDir/headerGeneric.txt .eventType`
+eventKeyStart=`colSelect.py $scriptDir/Splidar.Splicing.headerGeneric.txt .eventType`
 eventKeyStart=`expr $eventKeyStart - 1`
-eventKeyEnd=`colSelect.py $scriptDir/headerGeneric.txt .UCSCGenomeBrowser`
+eventKeyEnd=`colSelect.py $scriptDir/Splidar.Splicing.headerGeneric.txt .UCSCGenomeBrowser`
 eventKeyEnd=`expr $eventKeyEnd - 1`
 
 cat $sample.*.seq.xls > ../seq.headless.00
@@ -28,7 +28,7 @@ paste ../eventID.00 ../seq.headless.00 > ../seq.merged.headless.wEID.00
 
 sort +0 -1 ../seq.merged.headless.wEID.00 > ../seq.merged.highlyRedundant
 
-cat $scriptDir/seqHeader.txt ../seq.merged.highlyRedundant > ../seq.merged.xls
+cat $scriptDir/Splidar.Splicing.seqHeader.txt ../seq.merged.highlyRedundant > ../seq.merged.xls
 
 cd $scriptDir
 

@@ -53,7 +53,7 @@ wc -l $fgSet
 powersetpref=${fgSet/.xls/powerSet}  #CombinedAnalysis.final.FDRm.FDR0.05_dPsi-0.40.4powerSet
 
 
-python $scriptPath/findPowerSet.py --iterate-median-B4 100 $fgSet $bgSet $powersetpref 2> ${fgSet/.xls/}_powerset.log
+Splidar.Splicing.findPowerSet.py --iterate-median-B4 100 $fgSet $bgSet $powersetpref 2> ${fgSet/.xls/}_powerset.log
 
 source ${fgSet/.xls/}_powerset.log
 
