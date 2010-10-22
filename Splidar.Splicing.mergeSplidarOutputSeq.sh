@@ -26,7 +26,7 @@ cut -d"$TAB" -f$eventKeyStart-$eventKeyEnd ../seq.headless.00 > ../eventKey.00
 paste ../eventID.00 ../seq.headless.00 > ../seq.merged.headless.wEID.00
 
 
-sort +0 -1 ../seq.merged.headless.wEID.00 > ../seq.merged.highlyRedundant
+sort -k1,1 ../seq.merged.headless.wEID.00 > ../seq.merged.highlyRedundant
 
 cat $scriptDir/Splidar.Splicing.seqHeader.txt ../seq.merged.highlyRedundant > ../seq.merged.xls
 

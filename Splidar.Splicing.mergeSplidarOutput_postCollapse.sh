@@ -23,7 +23,7 @@ cd $rootDir
 echo "$prefix>" >> Events.count.log
 
 #now get the sequence simplified;
-cut -d"$TAB" -f1 "$prefix/Combined.00" | sort +0 -1 > "$prefix/seq.request.00"
+cut -d"$TAB" -f1 "$prefix/Combined.00" | sort -k1,1 > "$prefix/seq.request.00"
 join -t"$TAB" "$prefix/seq.request.00" seq.merged.highlyRedundant > "$prefix/seq.merged.00"
 
 cat $scriptDir/Splidar.Splicing.seqHeader.txt "$prefix/seq.merged.00" > "$prefix/seq.merged.xls"
