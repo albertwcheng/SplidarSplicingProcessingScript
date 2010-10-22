@@ -18,8 +18,17 @@ inPath=`checkInPath.sh Splidar.Splicing.mergeSplidarOutput.sh`
 if [[ $inPath == 0 ]]; then #not in path
 	echo "not in path. add path"
 	export PATH=${PATH}:$scriptDir
-	export PATH=${PATH}:$scriptDir/ftestPrint
+	
 fi
+
+inPath=`checkInPath.sh ftestPrint`
+
+if [[ $inPath == 0 ]]; then #not in path
+	echo "not in path. add path"
+	export PATH=${PATH}:$scriptDir/ftestPrint
+	
+fi
+
 
 source $paramFile
 
