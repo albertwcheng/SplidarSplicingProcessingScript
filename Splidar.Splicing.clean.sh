@@ -13,7 +13,7 @@ for event in RI SE MXE A5SS A3SS  A3UTR AFE  ALE; do
 done
 
 for splitEvent in A5SS A3SS AFE ALE; do
-	if [ -e $event ]; then
-		rm -Rf $event
+	if [ -e $splitEvent ]; then
+		rm -Rf $splitEvent
 	fi
 done
