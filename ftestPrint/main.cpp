@@ -19,10 +19,16 @@ double ftest(double n1, double n2, double n3, double n4)
   
   /* execute fisher test */
   res = apop_test_fisher_exact(testdata);
-  //p = gsl_matrix_get(res->matrix,1,0);
-  //p = apop_data_get(res,1,-1);
-   p = apop_data_get(res,1,0);
 
+
+
+   //apophenia library is buggy? different version store the data differently. Some version store in matrix some in vector
+   if(res->matrix){
+   p = apop_data_get(res,1,0); 
+  }else
+  {
+	p=apop_data_get(res,1,-1);
+   }
   /* free allocated data structs */
   apop_data_free(res);
   apop_data_free(testdata);
