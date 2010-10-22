@@ -12,8 +12,22 @@ fi
 ####set path
 
 myPath=`absdirname.py $0`
-export PATH=${PATH}:${myPath}
-export PATH=${PATH}:${myPath}/ftestPrint
+scriptDir=$myPath
+inPath=`checkInPath.sh Splidar.Splicing.mergeSplidarOutput.sh`
+
+if [[ $inPath == 0 ]]; then #not in path
+	echo "not in path. add path"
+	export PATH=${PATH}:$scriptDir
+	
+fi
+
+inPath=`checkInPath.sh ftestPrint`
+
+if [[ $inPath == 0 ]]; then #not in path
+	echo "not in path. add path"
+	export PATH=${PATH}:$scriptDir/ftestPrint
+	
+fi
 
 paramFile=$1
 paramFile=`abspath.py $paramFile`  #get the abs path of param file such that it can be used even when pwd is not the same
