@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -Rf *.ebed
+
 for event in RI SE MXE A5SS A3SS  A3UTR AFE  ALE; do
 	if [ -e $event ]; then
 		cd $event
@@ -8,6 +10,7 @@ for event in RI SE MXE A5SS A3SS  A3UTR AFE  ALE; do
 		rm -Rf */*.00 
 		rm -Rf */*.merged.* 
 		rm -Rf */*.header.txt
+		rm -Rf *.ebed *.err
 		cd ..
 	fi
 done
