@@ -21,13 +21,15 @@ if [[ $inPath == 0 ]]; then #not in path
 	
 fi
 
-inPath=`checkInPath.sh ftestPrint`
+#NO LONGER using C apophenia ftestPrint, use Python fisher 
 
-if [[ $inPath == 0 ]]; then #not in path
-	echo "not in path. add path"
-	export PATH=${PATH}:$scriptDir/ftestPrint
-	
-fi
+#inPath=`checkInPath.sh ftestPrint`
+
+#if [[ $inPath == 0 ]]; then #not in path
+#	echo "not in path. add path"
+#	export PATH=${PATH}:$scriptDir/ftestPrint
+#	
+#fi
 
 paramFile=$1
 paramFile=`abspath.py $paramFile`  #get the abs path of param file such that it can be used even when pwd is not the same
@@ -137,4 +139,5 @@ for event in SE MXE RI A5SS A3SS  AFE ALE  A3UTR   ; do #SE MXE RI  SE MXE RI_TT
 	#cd ..
 	#cd ..
 done
-		
+
+Splidar.Splicing.generateCompleteEventTrack.sh

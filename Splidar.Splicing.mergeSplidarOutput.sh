@@ -21,13 +21,15 @@ if [[ $inPath == 0 ]]; then #not in path
 	
 fi
 
-inPath=`checkInPath.sh ftestPrint`
 
-if [[ $inPath == 0 ]]; then #not in path
-	echo "not in path. add path"
-	export PATH=${PATH}:$scriptDir/ftestPrint
-	
-fi
+#NO LONGER using C apophenia ftestPrint, use Python fisher 
+#inPath=`checkInPath.sh ftestPrint`
+
+#if [[ $inPath == 0 ]]; then #not in path
+#	echo "not in path. add path"
+#	export PATH=${PATH}:$scriptDir/ftestPrint
+#	
+#fi
 
 
 source $paramFile
@@ -136,10 +138,12 @@ for((i=0;i<nSamples-1;i++)); do
 		#NI[1] NI[2] NE[1] NE[2] startRow=2
 		echo ${samples[$j]}-${samples[$i]}.fisherpvalue > "$rootDir/${i}_${j}.fisher.00"
 		echo testing columns  ${NICols[$i]} ${NICols[$j]} ${NECols[$i]} ${NECols[$j]} > "$rootDir/${i}_${j}.fisher.err"
-		$fPrintTestPath $rootDir/Combined-1.00 ${NICols[$i]} ${NICols[$j]} ${NECols[$i]} ${NECols[$j]} 2 >> "$rootDir/${i}_${j}.fisher.00" 2>> "$rootDir/${i}_${j}.fisher.err"
+		#$fPrintTestPath $rootDir/Combined-1.00 ${NICols[$i]} ${NICols[$j]} ${NECols[$i]} ${NECols[$j]} 2 >> "$rootDir/${i}_${j}.fisher.00" 2>> "$rootDir/${i}_${j}.fisher.err"
+		#uses the python fisher
+		fisherExactTest.py --infile two $rootDir/Combined-1.00 ${NICols[$i]} ${NICols[$j]} ${NECols[$i]} ${NECols[$j]} 2 >> "$rootDir/${i}_${j}.fisher.00" 2>> "$rootDir/${i}_${j}.fisher.err"
 		fisher00Len=`wc -l $rootDir/${i}_${j}.fisher.00 | cut -d" " -f1`
-		#echo $fisher00Len
-		#echo $combined100Len
+		echo $fisher00Len
+		echo $combined100Len
 		if [ $fisher00Len != $combined100Len ]; then
 
 			echo "error: fisher len != combined len"
