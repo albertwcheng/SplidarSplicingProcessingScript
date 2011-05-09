@@ -54,6 +54,19 @@ def matchEvent_bestBounds(ev1bounds,ev2bounds):
 		
 		
 		i2=starter2
+		
+		if starter2%2!=1: #not the end coord, abort!
+			return False
+		
+		if starter2+len(ev1boundsExpanded)>lev2bound+1:
+			return False
+		
+		if ev2boundsExpanded[starter2-1]>ev1boundsExpanded[0]:
+			return False
+		
+		if ev2boundsExpanded[starter2+len(ev1boundsExpanded)-2]<ev1boundsExpanded[-1]:
+			return False
+		
 		#then inner bounds should be the same
 		for i in range(1,len(ev1boundsExpanded)-1):
 			if i2>=lev2bound-1:
@@ -111,12 +124,14 @@ if __name__=='__main__':
 	
 	###tmpFileName="/tmp/tmp5_bZgi"
 	
-	###print >> stderr,tmpFileName
+	print >> stderr,"temp file:",tmpFileName
 	
 	#tmpFileName="tmp.00"
 	
 	
-	###system(" ".join(["joinBedByOverlap.py",ev1bed,ev2bed,">",tmpFileName]))
+	system(" ".join(["joinBedByOverlap.py",ev1bed,ev2bed,">",tmpFileName]))
+	
+	print >> stderr,"Done event transcript overlap. Proceed to matching"
 	
 	#system(" ".join(["colStat.py",tmpFileName]))
 	
@@ -160,6 +175,8 @@ Index			Excel			Field
 	for lin in fil:
 		lino+=1
 		fields=lin.rstrip("\r\n").split()
+		
+		chrom=fields[12]
 		#print >> stderr,fields
 		try:
 			ev1bounds=chromStartBlockStartsSizes2GenomicCoordinates(fields[1],fields[11].split(","),fields[10].split(","))
@@ -184,7 +201,7 @@ Index			Excel			Field
 		matched=func(ev1bounds,ev2bounds)
 		
 		if matched:
-			print >> stdout,ev1ID+"\t"+ev2ID
+			print >> stdout,ev1ID+"\t"+ev2ID+"\t"+chrom
 			
 			#matchPairFlag=ev1pairID*10+ev2pairID #10+1=11
 			#if ev1eventID not in matchedEventons:
@@ -210,3 +227,5 @@ Index			Excel			Field
 	
 	
 	deleteTempFile(tmpFileName)
+	
+	print >> stderr,"<Done>"
