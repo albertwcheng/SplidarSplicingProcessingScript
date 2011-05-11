@@ -29,7 +29,7 @@ for((i=0;i<${#comparisons[@]};i++)); do
 	mkdir.py $outputDir/$comparison
 	
 	cuta.py -f.eventType,.locusName,.egstring $file > $outputDir/$comparison/$comparison.eventTLocusEGString.txt
-	cuta.py -f.eventType,.locusName $outputDir/$comparison/$comparison.eventLocusEGString.txt > $outputDir/$comparison/$comparison.eventTLocus.txt
+	cuta.py -f.eventType,.locusName $outputDir/$comparison/$comparison.eventTLocusEGString.txt > $outputDir/$comparison/$comparison.eventTLocus.txt
 	cuta.py -f.eventType,.eventID $file > $outputDir/$comparison/$comparison.eventTID.txt
  	
  	toCompareEventTLocusEGString="$toCompareEventTLocusEGString $outputDir/$comparison/$comparison.eventTLocusEGString.txt"
@@ -41,6 +41,6 @@ done
 
 #now listCount
 
-listCount.py --headerFrom1To 1 $toCompareEventTLocusEGString > $outputDir/CompareEventTLocusEGString.txls
-listCount.py --headerFrom1To 1 $toCompareEventTLocus > $outputDir/CompareEventTLocus.txls
-listCount.py --headerFrom1To 1 $toCompareEventTID > $outputDir/CompareEventTID.txls
+listCount.py --headerFrom1To 1 --remove-ext-on-stdout-labels --usebasename --outcombination $outputDir/$comparison/,.comb.txls $toCompareEventTLocusEGString > $outputDir/CompareEventTLocusEGString.txls
+listCount.py --headerFrom1To 1 --remove-ext-on-stdout-labels --usebasename --outcombination $outputDir/$comparison/,.comb.txls $toCompareEventTLocus > $outputDir/CompareEventTLocus.txls
+listCount.py --headerFrom1To 1 --remove-ext-on-stdout-labels --usebasename --outcombination $outputDir/$comparison/,.comb.txls $toCompareEventTID > $outputDir/CompareEventTID.txls
