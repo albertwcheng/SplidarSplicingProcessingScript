@@ -35,7 +35,7 @@ def StringVectorToIntVectorInPlace(V):
 
 
 programName=sys.argv[0]
-opts,args=getopt(sys.argv[1:],'',['track-name=','item-sep=','block-sep=','startRow=','col-sep=','colors='])
+opts,args=getopt(sys.argv[1:],'',['track-name=','item-sep=','block-sep=','startRow=','col-sep=','colors=','name-join-sep='])
 
 if len(args)!=5:
 	print >> stderr, args
@@ -51,7 +51,7 @@ itemSep="/"
 blockSep=","
 startRow=2
 colSep="\t"
-nameJoinSep="."
+nameJoinSep=":" #change default to : for MISO
 coordSep="-"
 colors=[]
 
